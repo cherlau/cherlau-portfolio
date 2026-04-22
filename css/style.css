@@ -536,6 +536,14 @@ section { margin-bottom: 100px; }
   display: block;
 }
 
+.featured-image {
+  transition: transform 0.4s ease;
+}
+
+.featured-project:hover .featured-image {
+  transform: scale(1.07);
+}
+
 .featured-text {
   width: 200px;
   grid-row: 1;
