@@ -65,13 +65,18 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   const links    = document.querySelectorAll('.nav-link');
 
   function updateNav() {
-    var scrollY   = window.scrollY + 200;
-    var current   = 'about';
+    var scrollY      = window.scrollY + 535;
+    var current      = 'about';
+    var nearBottom   = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
 
-    sections.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el && el.offsetTop <= scrollY) current = id;
-    });
+    if (nearBottom) {
+      current = 'contact';
+    } else {
+      sections.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) current = id;
+      });
+    }
 
     links.forEach(function (link) {
       link.classList.toggle('active', link.getAttribute('href') === '#' + current);
