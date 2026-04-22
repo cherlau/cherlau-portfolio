@@ -8,7 +8,7 @@
   Portfólio pessoal de <a href="https://cherlau.com" target="_blank">Cherlau Prado</a>, desenvolvido com <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTML" target="_blank">HTML</a>, <a href="https://developer.mozilla.org/pt-BR/docs/Web/CSS" target="_blank">CSS</a> e <a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript" target="_blank">JavaScript</a> puro, sem frameworks ou dependências de build.
 </p>
 
-![demo](assets/cherlau.com_.png)
+![demo](assets/demo.png)
 
 ## 🚨 Forking this repo (please read!)
 
