@@ -313,7 +313,7 @@ section { margin-bottom: 100px; }
 .exp-role .company { color: var(--accent); }
 
 .exp-period {
-  color: #495670;
+  color: #b1bad3;
   font-size: 13px;
   font-family: 'Fira Code', monospace;
   margin-bottom: 20px;
@@ -339,6 +339,99 @@ section { margin-bottom: 100px; }
 }
 
 .exp-tags { display: flex; flex-wrap: wrap; }
+
+/* ── Career Progression Timeline ── */
+.exp-progression {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+.exp-prog-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0 16px;
+}
+
+.exp-prog-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.exp-prog-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+.exp-prog-dot--junior {
+  background: #a8b2d8;
+  box-shadow: none;
+}
+
+.exp-prog-dot--intern {
+  background: #495670;
+  box-shadow: none;
+}
+
+.exp-prog-line {
+  width: 2px;
+  flex: 1;
+  background: #233554;
+  margin: 6px 0;
+  min-height: 20px;
+}
+
+.exp-prog-body {
+  padding-bottom: 32px;
+}
+
+.exp-prog-item--last .exp-prog-body {
+  padding-bottom: 0;
+}
+
+.exp-prog-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.exp-prog-badge {
+  display: inline-block;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 11px;
+  font-family: 'Fira Code', monospace;
+  padding: 2px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.exp-prog-badge--junior {
+  background: color-mix(in srgb, #a8b2d8 10%, transparent);
+  color: #a8b2d8;
+  border-color: color-mix(in srgb, #a8b2d8 25%, transparent);
+}
+
+.exp-prog-badge--intern {
+  background: color-mix(in srgb, #495670 20%, transparent);
+  color: #495670;
+  border-color: color-mix(in srgb, #495670 40%, transparent);
+}
+
+.exp-prog-dates {
+  color: #8892b0;
+  font-size: 13px;
+  font-family: 'Fira Code', monospace;
+}
 
 /* ── Tag pill ── */
 .tag {
