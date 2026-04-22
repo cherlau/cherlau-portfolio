@@ -4,49 +4,657 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cherlau Prado — Desenvolvedor Front-End</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Calibre:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=SF+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     html { scroll-behavior: smooth; }
+
+    :root {
+      --accent: #64ffda;
+      --bg: #0a192f;
+    }
+
     body {
-      background-color: #0a192f;
+      background-color: var(--bg);
       color: #8892b0;
-      font-family: 'Inter', 'Calibre', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.6;
       overflow-x: hidden;
     }
+
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0a192f; }
     ::-webkit-scrollbar-thumb { background: #233554; border-radius: 3px; }
     ::selection { background: #64ffda33; color: #ccd6f6; }
 
-    /* Tweaks panel */
+    /* ── Tweaks panel ── */
     #tweaks-panel {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: #112240; border: 1px solid #233554;
-      border-radius: 12px; padding: 20px; width: 240px;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: #112240;
+      border: 1px solid #233554;
+      border-radius: 12px;
+      padding: 20px;
+      width: 240px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       display: none;
       font-size: 13px;
     }
     #tweaks-panel.visible { display: block; }
-    #tweaks-panel h3 { color: #64ffda; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    #tweaks-panel h3 {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
     .tweak-row { margin-bottom: 14px; }
     .tweak-row label { display: block; color: #a8b2d8; margin-bottom: 6px; font-size: 12px; }
     .tweak-row input[type=color] { width: 100%; height: 32px; border: 1px solid #233554; border-radius: 6px; background: #0a192f; cursor: pointer; }
     .tweak-row select { width: 100%; padding: 6px 8px; border: 1px solid #233554; border-radius: 6px; background: #0a192f; color: #ccd6f6; font-size: 12px; }
-    .tweak-row input[type=range] { width: 100%; accent-color: #64ffda; }
+    .tweak-row input[type=range] { width: 100%; accent-color: var(--accent); }
+
+    /* ── Layout ── */
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 0 80px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 80px 0;
+    }
+
+    .sidebar-greeting {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-name {
+      color: #ccd6f6;
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-title {
+      color: #8892b0;
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .sidebar-intro {
+      max-width: 280px;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ── Navigation ── */
+    nav { margin-top: 48px; }
+    nav ul { list-style: none; }
+    nav li { margin-bottom: 4px; }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      padding: 6px 0;
+      color: #8892b0;
+      transition: color 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active { color: #ccd6f6; }
+
+    .nav-line {
+      display: block;
+      height: 1px;
+      width: 24px;
+      background: #495670;
+      flex-shrink: 0;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    nav a:hover .nav-line,
+    nav a.active .nav-line { width: 48px; background: #ccd6f6; }
+
+    .nav-label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    nav a.active .nav-label { font-weight: 600; }
+
+    /* ── Social links ── */
+    .social-links { display: flex; gap: 20px; align-items: center; }
+
+    .social-links a {
+      color: #a8b2d8;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+
+    /* ── Main ── */
+    main { padding: 100px 0; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .section-number {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    .section-title {
+      color: #ccd6f6;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: #233554;
+      max-width: 260px;
+    }
+
+    section { margin-bottom: 100px; }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .about-text p { margin-bottom: 16px; line-height: 1.7; }
+    .about-text strong { color: #ccd6f6; }
+
+    .skills-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 0;
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .skills-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      padding: 3px 0;
+      color: #8892b0;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .skills-list li::before {
+      content: '▹';
+      color: var(--accent);
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ── Photo ── */
+    .photo-wrapper { position: relative; }
+
+    .photo-frame {
+      width: 100%;
+      padding-bottom: 100%;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+
+    .photo-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(20%);
+      transition: filter 0.3s;
+    }
+
+    .photo-frame img:hover { filter: grayscale(0%); }
+
+    .photo-shadow {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: -12px;
+      bottom: -12px;
+      border: 2px solid color-mix(in srgb, var(--accent) 33%, transparent);
+      border-radius: 4px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ── Experience tabs ── */
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+    }
+
+    .exp-tab-list {
+      border-left: 2px solid #233554;
+      position: relative;
+    }
+
+    .exp-indicator {
+      position: absolute;
+      left: -2px;
+      top: 0;
+      width: 2px;
+      height: 46px;
+      background: var(--accent);
+      transition: top 0.3s ease;
+    }
+
+    .exp-tab {
+      display: block;
+      width: 100%;
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      color: #8892b0;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.05em;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .exp-tab:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+    .exp-tab.active { color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+    .exp-content { padding: 0 0 0 28px; }
+
+    .exp-panel { display: none; }
+    .exp-panel.active { display: block; }
+
+    .exp-role { color: #ccd6f6; font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+    .exp-role .company { color: var(--accent); }
+
+    .exp-period {
+      color: #495670;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      margin-bottom: 20px;
+    }
+
+    .exp-desc { margin-bottom: 16px; line-height: 1.7; }
+
+    .exp-bullets { list-style: none; margin-bottom: 20px; }
+
+    .exp-bullets li {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .exp-bullets li::before {
+      content: '▹';
+      color: var(--accent);
+      font-size: 10px;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .exp-tags { display: flex; flex-wrap: wrap; }
+
+    /* ── Tag pill ── */
+    .tag {
+      display: inline-block;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      color: var(--accent);
+      font-size: 11px;
+      font-family: 'Fira Code', monospace;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── Featured projects ── */
+    .featured-project { position: relative; margin-bottom: 80px; }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    .featured-image {
+      grid-row: 1;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 340px;
+      background: color-mix(in srgb, var(--accent) 9%, transparent);
+      position: relative;
+    }
+
+    .featured-project--even .featured-image { grid-column: 1; }
+    .featured-project--odd  .featured-image { grid-column: 2; }
+
+    .featured-text {
+      grid-row: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .featured-project--even .featured-text { grid-column: 2; text-align: right; }
+    .featured-project--odd  .featured-text { grid-column: 1; text-align: left; }
+
+    .featured-label {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .featured-name {
+      color: #ccd6f6;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .featured-desc {
+      background: #112240;
+      padding: 24px;
+      border-radius: 4px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .featured-desc p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: #a8b2d8;
+    }
+
+    .featured-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: #8892b0;
+    }
+
+    .featured-project--even .featured-tech { justify-content: flex-end; }
+    .featured-project--odd  .featured-tech { justify-content: flex-start; }
+
+    .featured-icons { display: flex; gap: 14px; }
+
+    .featured-project--even .featured-icons { justify-content: flex-end; }
+    .featured-project--odd  .featured-icons { justify-content: flex-start; }
+
+    .featured-icons a {
+      color: #a8b2d8;
+      display: flex;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .featured-icons a:hover { color: var(--accent); transform: translateY(-2px); }
+
+    /* ── Mock UIs inside featured images ── */
+    .mock-spotify {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 24px;
+      background: #0d2137;
+    }
+
+    .mock-spotify-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border: 2px solid color-mix(in srgb, var(--accent) 27%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mock-spotify-icon svg { fill: var(--accent); opacity: 0.53; }
+
+    .mock-heading {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .mock-sub {
+      color: #495670;
+      font-size: 11px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .mock-rows {
+      width: 100%;
+      max-width: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .mock-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: #112240;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+
+    .mock-row span:first-child { color: #8892b0; }
+    .mock-row span:last-child { color: var(--accent); font-size: 10px; font-family: 'Fira Code', monospace; }
+
+    .mock-pricing {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 24px;
+      background: #0d2137;
+    }
+
+    .mock-pricing-label {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .mock-pricing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #112240;
+      border-radius: 4px;
+      border: 1px solid #233554;
+    }
+
+    .mock-pricing-row span:first-child { color: #8892b0; font-size: 12px; }
+    .mock-pricing-row span:last-child { color: var(--accent); font-family: 'Fira Code', monospace; font-size: 13px; font-weight: 600; }
+
+    .mock-pricing-cta {
+      margin-top: auto;
+      padding: 10px 14px;
+      background: color-mix(in srgb, var(--accent) 13%, transparent);
+      border-radius: 4px;
+      border: 1px solid color-mix(in srgb, var(--accent) 27%, transparent);
+      text-align: center;
+    }
+
+    .mock-pricing-cta span { color: var(--accent); font-size: 12px; font-family: 'Fira Code', monospace; }
+
+    /* ── Other project cards ── */
+    .other-projects { display: flex; flex-direction: column; gap: 16px; }
+
+    .project-card {
+      background: #112240;
+      border-radius: 4px;
+      padding: 28px;
+      border: 1px solid #1d3461;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border-color: color-mix(in srgb, var(--accent) 27%, transparent);
+    }
+
+    .project-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .project-card-top .folder { color: color-mix(in srgb, var(--accent) 60%, transparent); }
+
+    .project-card-links { display: flex; gap: 12px; }
+
+    .project-card-links a {
+      color: #a8b2d8;
+      display: flex;
+      transition: color 0.2s;
+    }
+
+    .project-card-links a:hover { color: var(--accent); }
+
+    .project-card h3 { color: #ccd6f6; font-size: 17px; font-weight: 600; margin-bottom: 10px; line-height: 1.3; }
+    .project-card p  { font-size: 14px; line-height: 1.7; color: #8892b0; margin-bottom: 24px; flex: 1; }
+
+    .project-card-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      color: #495670;
+      margin-top: auto;
+    }
+
+    /* ── Contact ── */
+    #contact { text-align: center; padding: 0 40px; }
+
+    .contact-eyebrow {
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    #contact h2 { color: #ccd6f6; font-size: 48px; font-weight: 600; margin-bottom: 20px; line-height: 1.1; }
+    #contact > p { max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-size: 15px; }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 16px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      font-family: 'Fira Code', monospace;
+      letter-spacing: 0.05em;
+      transition: background 0.2s;
+      background: transparent;
+    }
+
+    .contact-btn:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+
+    /* ── Footer ── */
+    footer { text-align: center; padding: 20px 0 40px; border-top: 1px solid #233554; }
+
+    footer a {
+      color: #495670;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
 
-<div id="root"></div>
 <div id="tweaks-panel">
   <h3>Tweaks</h3>
   <div class="tweak-row">
@@ -72,7 +680,361 @@
   </div>
 </div>
 
-<script type="text/babel">
+<div class="layout">
+
+  <!-- ═══════════════════════════════ SIDEBAR ═══════════════════════════════ -->
+  <aside class="sidebar">
+    <div>
+      <p class="sidebar-greeting">Olá, meu nome é</p>
+      <h1 class="sidebar-name">Cherlau Prado.</h1>
+      <h2 class="sidebar-title">Eu construo coisas <br>para a web.</h2>
+      <p class="sidebar-intro">Especialista em Vue.js e Nuxt.js com quase 4 anos de experiência em produtos digitais escaláveis. Apaixonado por performance, acessibilidade e arquitetura front-end limpa.</p>
+
+      <nav>
+        <ul>
+          <li><a href="#about" class="nav-link active"><span class="nav-line"></span><span class="nav-label">Sobre Mim</span></a></li>
+          <li><a href="#experience" class="nav-link"><span class="nav-line"></span><span class="nav-label">Experiência</span></a></li>
+          <li><a href="#projects" class="nav-link"><span class="nav-line"></span><span class="nav-label">Projetos</span></a></li>
+          <li><a href="#contact" class="nav-link"><span class="nav-line"></span><span class="nav-label">Contato</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="social-links">
+      <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/cherlau-prado" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <a href="mailto:cherlau_prado@hotmail.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════ MAIN CONTENT ════════════════════════════ -->
+  <main>
+
+    <!-- SOBRE MIM -->
+    <section id="about">
+      <div class="section-header">
+        <span class="section-number">01.</span>
+        <span class="section-title">Sobre Mim</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Sou um desenvolvedor front-end pleno com quase 4 anos de experiência construindo produtos digitais escaláveis. Especialista em <strong>Vue.js 2/3</strong> e <strong>Nuxt.js</strong>, com forte atuação em performance (Core Web Vitals), acessibilidade (WCAG) e arquitetura front-end.</p>
+          <p>Atualmente trabalho na <strong>App Facilita</strong>, onde lidero o desenvolvimento do front-end de um CRM utilizado por +300 clientes e +50 mil usuários ativos. Já atuei na migração de grandes aplicações, criação de Design Systems e mentoria técnica.</p>
+          <p>Também tenho experiência com <strong>React</strong> e <strong>Next.js</strong>, o que me permite transitar entre diferentes ecossistemas com facilidade. Fora do trabalho, gosto de explorar novas tecnologias e contribuir para projetos pessoais.</p>
+          <p>Aqui estão algumas tecnologias com as quais tenho trabalhado recentemente:</p>
+          <ul class="skills-list">
+            <li>Vue.js 2 / Vue.js 3</li>
+            <li>Nuxt.js</li>
+            <li>React / Next.js</li>
+            <li>TypeScript</li>
+            <li>Tailwind CSS</li>
+            <li>Docker</li>
+          </ul>
+        </div>
+
+        <div class="photo-wrapper">
+          <div class="photo-frame">
+            <img src="uploads/1700061191174.jpg" alt="Cherlau Prado" />
+          </div>
+          <div class="photo-shadow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ONDE TRABALHEI -->
+    <section id="experience">
+      <div class="section-header">
+        <span class="section-number">02.</span>
+        <span class="section-title">Onde Trabalhei</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="exp-layout">
+        <div class="exp-tab-list">
+          <div class="exp-indicator" id="exp-indicator"></div>
+          <button class="exp-tab active" data-panel="0">App Facilita</button>
+          <button class="exp-tab" data-panel="1">App Facilita</button>
+          <button class="exp-tab" data-panel="2">App Facilita</button>
+          <button class="exp-tab" data-panel="3">PrimeSoftware</button>
+        </div>
+
+        <div class="exp-content">
+          <div class="exp-panel active" id="exp-panel-0">
+            <h3 class="exp-role">Desenvolvedor Front-End Pleno (Vue.js) <span class="company">@ App Facilita</span></h3>
+            <p class="exp-period">Jun 2025 — Presente</p>
+            <p class="exp-desc">Responsável pela evolução do CRM e integrações utilizadas por +300 clientes e +50 mil usuários ativos. Lidero a construção do front-end do Connector com Vue.js 3 e Nuxt.js, definindo a arquitetura da aplicação com Composition API e integração desacoplada com APIs REST.</p>
+            <ul class="exp-bullets">
+              <li>Migração do sistema de Vue.js 2 para Vue.js 3, melhorando performance e estabilidade.</li>
+              <li>Implementei Lazy Loading e Code Splitting, reduzindo o LCP e melhorando SEO.</li>
+              <li>Construção do Design System interno, padronizando UI e componentes.</li>
+              <li>Mentoria técnica para devs júnior e Code Reviews focados em qualidade.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="tag">Vue.js 3</span>
+              <span class="tag">Nuxt.js</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Pinia</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">Design System</span>
+            </div>
+          </div>
+
+          <div class="exp-panel" id="exp-panel-1">
+            <h3 class="exp-role">Desenvolvedor Front-End Junior <span class="company">@ App Facilita</span></h3>
+            <p class="exp-period">Mai 2024 — Mai 2025</p>
+            <p class="exp-desc">Desenvolvimento e evolução do CRM com Vue.js 2, Vue.js 3 e Nuxt.js, convertendo protótipos do Figma em interfaces responsivas com alta fidelidade visual.</p>
+            <ul class="exp-bullets">
+              <li>Corrigi mais de 80 bugs críticos, garantindo compatibilidade e responsividade.</li>
+              <li>Integrei APIs RESTful complexas com tratamento de estados de carregamento e erros.</li>
+              <li>Participei ativamente das cerimônias Scrum, contribuindo para refinamento de tarefas.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="tag">Vue.js 2</span>
+              <span class="tag">Vue.js 3</span>
+              <span class="tag">Nuxt.js</span>
+              <span class="tag">Vuex</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">Figma</span>
+            </div>
+          </div>
+
+          <div class="exp-panel" id="exp-panel-2">
+            <h3 class="exp-role">Estagiário Front-End <span class="company">@ App Facilita</span></h3>
+            <p class="exp-period">Nov 2023 — Abr 2024</p>
+            <p class="exp-desc">Apoiei o time no desenvolvimento de novas funcionalidades do CRM com Vue.js 2, realizando ajustes de layout e implementação de componentes a partir de protótipos Figma.</p>
+            <ul class="exp-bullets">
+              <li>Correções de bugs visuais e funcionais sob supervisão.</li>
+              <li>Aprimorei conhecimentos em APIs REST, Git e boas práticas de componentização.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="tag">Vue.js 2</span>
+              <span class="tag">Git</span>
+              <span class="tag">REST APIs</span>
+            </div>
+          </div>
+
+          <div class="exp-panel" id="exp-panel-3">
+            <h3 class="exp-role">Estagiário de Desenvolvimento Web (React) <span class="company">@ PrimeSoftware</span></h3>
+            <p class="exp-period">Nov 2022 — Out 2023</p>
+            <p class="exp-desc">Desenvolvimento de componentes reutilizáveis com React (Hooks), integração com APIs REST e colaboração com a equipe de marketing para páginas otimizadas para SEO.</p>
+            <ul class="exp-bullets">
+              <li>Gerenciamento de estado com Context API / Redux.</li>
+              <li>Implementação de melhorias de performance, reduzindo re-renderizações desnecessárias.</li>
+            </ul>
+            <div class="exp-tags">
+              <span class="tag">React</span>
+              <span class="tag">Redux</span>
+              <span class="tag">Context API</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">SEO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJETOS -->
+    <section id="projects">
+      <div class="section-header">
+        <span class="section-number">03.</span>
+        <span class="section-title">Projetos em Destaque</span>
+        <div class="section-line"></div>
+      </div>
+
+      <!-- Spotify Profile Viewer (imagem à esquerda) -->
+      <div class="featured-project featured-project--even">
+        <div class="featured-grid">
+          <div class="featured-image">
+            <div class="mock-spotify">
+              <div class="mock-spotify-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="10 8 16 12 10 16 10 8"/>
+                </svg>
+              </div>
+              <div class="mock-heading">Spotify Viewer</div>
+              <div class="mock-sub">Profile · Stats · Playlists</div>
+              <div class="mock-rows">
+                <div class="mock-row"><span>Top Artists</span><span>→</span></div>
+                <div class="mock-row"><span>Top Tracks</span><span>→</span></div>
+                <div class="mock-row"><span>Recently Played</span><span>→</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="featured-text">
+            <p class="featured-label">Projeto em Destaque</p>
+            <h3 class="featured-name">Spotify Profile Viewer</h3>
+            <div class="featured-desc">
+              <p>Projeto pessoal focado em Server-Side Rendering (SSR) e SEO com a API do Spotify. Implementei busca debounced e paginação infinita para melhor experiência do usuário.</p>
+            </div>
+            <div class="featured-tech">
+              <span>React</span>
+              <span>TypeScript</span>
+              <span>React Query</span>
+              <span>Vite</span>
+              <span>SSR</span>
+            </div>
+            <div class="featured-icons">
+              <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Precificador (imagem à direita) -->
+      <div class="featured-project featured-project--odd">
+        <div class="featured-grid">
+          <div class="featured-image">
+            <div class="mock-pricing">
+              <div class="mock-pricing-label">Precificador</div>
+              <div class="mock-pricing-row"><span>Plano Básico</span><span>R$ 299</span></div>
+              <div class="mock-pricing-row"><span>Plano Pro</span><span>R$ 599</span></div>
+              <div class="mock-pricing-row"><span>Plano Enterprise</span><span>R$ 1.199</span></div>
+              <div class="mock-pricing-cta"><span>Gerar Proposta →</span></div>
+            </div>
+          </div>
+
+          <div class="featured-text">
+            <p class="featured-label">Projeto em Destaque</p>
+            <h3 class="featured-name">Precificador de Proposta via Planilha</h3>
+            <div class="featured-desc">
+              <p>Configurador de planos em Vue.js que faz a precificação alimentada por Google Sheets, utilizado pelo time de vendas. Módulos, descontos e condições de pagamento gerenciados por planilha — sem intervenção técnica.</p>
+            </div>
+            <div class="featured-tech">
+              <span>Vue.js</span>
+              <span>Pinia</span>
+              <span>Axios</span>
+              <span>Google Sheets API</span>
+            </div>
+            <div class="featured-icons">
+              <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outros Projetos -->
+      <div class="section-header" style="margin-top: 60px; margin-bottom: 32px;">
+        <span class="section-number">04.</span>
+        <span class="section-title">Outros Projetos</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="other-projects">
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="folder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="project-card-links">
+              <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3>CRM Dashboard — App Facilita</h3>
+          <p>Evolução do painel principal do CRM, com melhorias de performance, acessibilidade e novas integrações. Migração de Vue.js 2 para Vue.js 3 com Composition API.</p>
+          <div class="project-card-tech">
+            <span>Vue.js 3</span><span>Nuxt.js</span><span>Pinia</span><span>REST API</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="folder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="project-card-links">
+              <a href="#" target="_blank" rel="noreferrer" aria-label="Ver projeto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3>Design System Interno</h3>
+          <p>Construção do Design System da App Facilita, padronizando componentes, tokens de design e guidelines para o time de front-end.</p>
+          <div class="project-card-tech">
+            <span>Vue.js</span><span>Storybook</span><span>CSS</span><span>Figma</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-top">
+            <div class="folder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div class="project-card-links"></div>
+          </div>
+          <h3>Connector — Módulo de Integrações</h3>
+          <p>Front-end do módulo Connector com arquitetura modular por domínio, separação de responsabilidades e integração desacoplada com APIs REST.</p>
+          <div class="project-card-tech">
+            <span>Vue.js 3</span><span>Nuxt.js</span><span>TypeScript</span><span>Axios</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contact">
+      <p class="contact-eyebrow">04. O que vem a seguir?</p>
+      <h2>Vamos Conversar?</h2>
+      <p>Estou aberto a novas oportunidades. Se você tem uma ideia, projeto ou só quer trocar uma ideia, minha caixa de entrada está sempre aberta.</p>
+      <a href="mailto:cherlau_prado@hotmail.com" class="contact-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        Diz um oi
+      </a>
+    </section>
+
+    <footer>
+      <a href="https://github.com/cherlau" target="_blank" rel="noreferrer">
+        Desenvolvido por Cherlau Prado
+      </a>
+    </footer>
+
+  </main>
+</div>
+
+<script>
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accent": "#64ffda",
   "bg": "#0a192f",
@@ -80,685 +1042,92 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "fontSize": 16
 }/*EDITMODE-END*/;
 
-// ─── DATA ────────────────────────────────────────────────
-const data = {
-  name: "Cherlau Prado",
-  title: "Desenvolvedor Front-End Pleno",
-  tagline: "Eu construo coisas para a web.",
-  intro: "Especialista em Vue.js e Nuxt.js com quase 4 anos de experiência em produtos digitais escaláveis. Apaixonado por performance, acessibilidade e arquitetura front-end limpa.",
-  about: [
-    "Sou um desenvolvedor front-end pleno com quase 4 anos de experiência construindo produtos digitais escaláveis. Especialista em <strong>Vue.js 2/3</strong> e <strong>Nuxt.js</strong>, com forte atuação em performance (Core Web Vitals), acessibilidade (WCAG) e arquitetura front-end.",
-    "Atualmente trabalho na <strong style='color:#ccd6f6'>App Facilita</strong>, onde lidero o desenvolvimento do front-end de um CRM utilizado por +300 clientes e +50 mil usuários ativos. Já atuei na migração de grandes aplicações, criação de Design Systems e mentoria técnica.",
-    "Também tenho experiência com <strong>React</strong> e <strong>Next.js</strong>, o que me permite transitar entre diferentes ecossistemas com facilidade. Fora do trabalho, gosto de explorar novas tecnologias e contribuir para projetos pessoais.",
-    "Aqui estão algumas tecnologias com as quais tenho trabalhado recentemente:"
-  ],
-  skills: [
-    "Vue.js 2 / Vue.js 3", "Nuxt.js", "React / Next.js",
-    "TypeScript", "Tailwind CSS", "Docker"
-  ],
-  experience: [
-    {
-      period: "Jun 2025 — Presente",
-      role: "Desenvolvedor Front-End Pleno (Vue.js)",
-      company: "App Facilita",
-      url: "#",
-      desc: "Responsável pela evolução do CRM e integrações utilizadas por +300 clientes e +50 mil usuários ativos. Lidero a construção do front-end do Connector com Vue.js 3 e Nuxt.js, definindo a arquitetura da aplicação com Composition API e integração desacoplada com APIs REST.",
-      bullets: [
-        "Migração do sistema de Vue.js 2 para Vue.js 3, melhorando performance e estabilidade.",
-        "Implementei Lazy Loading e Code Splitting, reduzindo o LCP e melhorando SEO.",
-        "Construção do Design System interno, padronizando UI e componentes.",
-        "Mentoria técnica para devs júnior e Code Reviews focados em qualidade."
-      ],
-      tags: ["Vue.js 3", "Nuxt.js", "TypeScript", "Pinia", "REST APIs", "Design System"]
-    },
-    {
-      period: "Mai 2024 — Mai 2025",
-      role: "Desenvolvedor Front-End Junior",
-      company: "App Facilita",
-      url: "#",
-      desc: "Desenvolvimento e evolução do CRM com Vue.js 2, Vue.js 3 e Nuxt.js, convertendo protótipos do Figma em interfaces responsivas com alta fidelidade visual.",
-      bullets: [
-        "Corrigi mais de 80 bugs críticos, garantindo compatibilidade e responsividade.",
-        "Integrei APIs RESTful complexas com tratamento de estados de carregamento e erros.",
-        "Participei ativamente das cerimônias Scrum, contribuindo para refinamento de tarefas."
-      ],
-      tags: ["Vue.js 2", "Vue.js 3", "Nuxt.js", "Vuex", "REST APIs", "Figma"]
-    },
-    {
-      period: "Nov 2023 — Abr 2024",
-      role: "Estagiário Front-End",
-      company: "App Facilita",
-      url: "#",
-      desc: "Apoiei o time no desenvolvimento de novas funcionalidades do CRM com Vue.js 2, realizando ajustes de layout e implementação de componentes a partir de protótipos Figma.",
-      bullets: [
-        "Correções de bugs visuais e funcionais sob supervisão.",
-        "Aprimorei conhecimentos em APIs REST, Git e boas práticas de componentização."
-      ],
-      tags: ["Vue.js 2", "Git", "REST APIs"]
-    },
-    {
-      period: "Nov 2022 — Out 2023",
-      role: "Estagiário de Desenvolvimento Web (React)",
-      company: "PrimeSoftware — ERP",
-      url: "#",
-      desc: "Desenvolvimento de componentes reutilizáveis com React (Hooks), integração com APIs REST e colaboração com a equipe de marketing para páginas otimizadas para SEO.",
-      bullets: [
-        "Gerenciamento de estado com Context API / Redux.",
-        "Implementação de melhorias de performance, reduzindo re-renderizações desnecessárias."
-      ],
-      tags: ["React", "Redux", "Context API", "REST APIs", "SEO"]
-    }
-  ],
-  otherProjects: [
-    {
-      name: "CRM Dashboard — App Facilita",
-      desc: "Evolução do painel principal do CRM, com melhorias de performance, acessibilidade e novas integrações. Migração de Vue.js 2 para Vue.js 3 com Composition API.",
-      tags: ["Vue.js 3", "Nuxt.js", "Pinia", "REST API"],
-      github: "https://github.com/cherlau",
-      live: null
-    },
-    {
-      name: "Design System Interno",
-      desc: "Construção do Design System da App Facilita, padronizando componentes, tokens de design e guidelines para o time de front-end.",
-      tags: ["Vue.js", "Storybook", "CSS", "Figma"],
-      github: null,
-      live: "#"
-    },
-    {
-      name: "Connector — Módulo de Integrações",
-      desc: "Front-end do módulo Connector com arquitetura modular por domínio, separação de responsabilidades e integração desacoplada com APIs REST.",
-      tags: ["Vue.js 3", "Nuxt.js", "TypeScript", "Axios"],
-      github: null,
-      live: null
-    }
-  ],
-  projects: [
-    {
-      name: "Spotify Profile Viewer",
-      desc: "Projeto pessoal focado em Server-Side Rendering (SSR) e SEO com a API do Spotify. Implementei busca debounced e paginação infinita para melhor experiência do usuário.",
-      tags: ["React", "TypeScript", "React Query", "Vite", "SSR"],
-      github: "https://github.com/cherlau",
-      live: null
-    },
-    {
-      name: "Precificador de Proposta via Planilha",
-      desc: "Configurador de planos em Vue.js que faz a precificação alimentada por Google Sheets, utilizado pelo time de vendas. Módulos, descontos e condições de pagamento gerenciados por planilha — sem intervenção técnica.",
-      tags: ["Vue.js", "Pinia", "Axios", "Google Sheets API"],
-      github: "https://github.com/cherlau",
-      live: null
-    }
-  ],
-  social: {
-    github: "https://github.com/cherlau",
-    linkedin: "https://linkedin.com/in/cherlau-prado",
-    email: "cherlau_prado@hotmail.com"
+// Tweaks panel
+(function () {
+  const accentEl = document.getElementById('tw-accent');
+  const bgEl     = document.getElementById('tw-bg');
+  const fontEl   = document.getElementById('tw-font');
+  const sizeEl   = document.getElementById('tw-size');
+
+  function applyTweaks() {
+    const accent   = accentEl.value;
+    const bg       = bgEl.value;
+    const fontSize = sizeEl.value + 'px';
+    const font     = fontEl.value;
+
+    document.documentElement.style.setProperty('--accent', accent);
+    document.documentElement.style.setProperty('--bg', bg);
+    document.body.style.background  = bg;
+    document.body.style.fontSize    = fontSize;
+    document.body.style.fontFamily  = font;
+
+    window.parent.postMessage({
+      type: '__edit_mode_set_keys',
+      edits: { accent, bg, font, fontSize: parseInt(sizeEl.value) }
+    }, '*');
   }
-};
 
-// ─── ICONS ───────────────────────────────────────────────
-const GithubIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-  </svg>
-);
-const LinkedinIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
-  </svg>
-);
-const EmailIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-  </svg>
-);
-const ExternalIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-  </svg>
-);
-const FolderIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-  </svg>
-);
-const ArrowIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-  </svg>
-);
+  [accentEl, bgEl, fontEl, sizeEl].forEach(el => el && el.addEventListener('input', applyTweaks));
 
-// ─── COMPONENTS ──────────────────────────────────────────
-const { useState, useEffect, useRef } = React;
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('visible');
+    if (e.data && e.data.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+  });
 
-function Tag({ label, accent }) {
-  return (
-    <span style={{
-      display: 'inline-block',
-      background: `${accent}1a`,
-      color: accent,
-      fontSize: '11px',
-      fontFamily: "'Fira Code', monospace",
-      padding: '3px 10px',
-      borderRadius: '4px',
-      marginRight: '6px',
-      marginBottom: '6px',
-      letterSpacing: '0.05em',
-      fontWeight: 500,
-      whiteSpace: 'nowrap'
-    }}>
-      {label}
-    </span>
-  );
-}
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+})();
 
-function NavItem({ id, label, activeSection, onClick }) {
-  const active = activeSection === id;
-  return (
-    <li style={{ marginBottom: '4px' }}>
-      <a
-        href={`#${id}`}
-        onClick={(e) => { e.preventDefault(); onClick(id); }}
-        style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          textDecoration: 'none', padding: '6px 0',
-          transition: 'all 0.2s',
-          color: active ? '#ccd6f6' : '#8892b0',
-        }}
-      >
-        <span style={{
-          display: 'block',
-          height: '1px',
-          width: active ? '48px' : '24px',
-          background: active ? '#ccd6f6' : '#495670',
-          transition: 'all 0.3s ease',
-          flexShrink: 0
-        }} />
-        <span style={{
-          fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase',
-          fontWeight: active ? '600' : '400',
-          transition: 'all 0.2s'
-        }}>
-          {label}
-        </span>
-      </a>
-    </li>
-  );
-}
+// Experience tabs
+(function () {
+  const tabs      = document.querySelectorAll('.exp-tab');
+  const panels    = document.querySelectorAll('.exp-panel');
+  const indicator = document.getElementById('exp-indicator');
 
-function SectionHeader({ number, label, accent }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
-      <span style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px' }}>
-        0{number}.
-      </span>
-      <span style={{ color: '#ccd6f6', fontSize: '22px', fontWeight: 600, letterSpacing: '0.02em' }}>
-        {label}
-      </span>
-      <div style={{ flex: 1, height: '1px', background: '#233554', maxWidth: '260px' }} />
-    </div>
-  );
-}
+  function activateTab(index) {
+    tabs.forEach(function (t) { t.classList.remove('active'); });
+    panels.forEach(function (p) { p.classList.remove('active'); });
+    tabs[index].classList.add('active');
+    document.getElementById('exp-panel-' + index).classList.add('active');
+    indicator.style.top = (index * 46) + 'px';
+  }
 
-function AboutSection({ accent }) {
-  const listStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 0', listStyle: 'none', marginTop: '16px' };
-  return (
-    <section id="about" style={{ marginBottom: '100px' }}>
-      <SectionHeader number={1} label="Sobre Mim" accent={accent} />
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '40px', alignItems: 'start' }}>
-        <div>
-          {data.about.map((p, i) => (
-            <p key={i} style={{ marginBottom: '16px', lineHeight: 1.7 }}
-               dangerouslySetInnerHTML={{ __html: p.replace(/<strong>/g, `<strong style="color:#ccd6f6">`) }} />
-          ))}
-          <ul style={listStyle}>
-            {data.skills.map(s => (
-              <li key={s} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', padding: '3px 0', color: '#8892b0', fontFamily: "'Fira Code', monospace" }}>
-                <span style={{ color: accent, fontSize: '10px' }}>▹</span>
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* Photo */}
-        <div style={{ position: 'relative' }}>
-          <div style={{
-            width: '100%', paddingBottom: '100%', position: 'relative',
-            borderRadius: '4px', overflow: 'hidden',
-            border: `2px solid ${accent}66`,
-          }}>
-            <img
-              src="uploads/1700061191174.jpg"
-              alt="Cherlau Prado"
-              style={{
-                position: 'absolute', inset: 0,
-                width: '100%', height: '100%',
-                objectFit: 'cover', objectPosition: 'center top',
-                filter: 'grayscale(20%)',
-                transition: 'filter 0.3s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.filter = 'grayscale(0%)'}
-              onMouseLeave={e => e.currentTarget.style.filter = 'grayscale(20%)'}
-            />
-          </div>
-          <div style={{
-            position: 'absolute', top: '12px', left: '12px', right: '-12px', bottom: '-12px',
-            border: `2px solid ${accent}55`, borderRadius: '4px', zIndex: -1,
-            pointerEvents: 'none'
-          }} />
-        </div>
-      </div>
-    </section>
-  );
-}
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { activateTab(i); });
+  });
+})();
 
-function ExperienceSection({ accent }) {
-  const [active, setActive] = useState(0);
-  const exp = data.experience;
-  return (
-    <section id="experience" style={{ marginBottom: '100px' }}>
-      <SectionHeader number={2} label="Onde Trabalhei" accent={accent} />
-      <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '0' }}>
-        {/* Tab list */}
-        <div style={{ borderLeft: '2px solid #233554', position: 'relative' }}>
-          <div style={{
-            position: 'absolute', left: '-2px', top: `${active * 46}px`, width: '2px',
-            height: '46px', background: accent, transition: 'top 0.3s ease'
-          }} />
-          {exp.map((e, i) => (
-            <button key={i} onClick={() => setActive(i)} style={{
-              display: 'block', width: '100%', padding: '12px 20px',
-              background: active === i ? `${accent}10` : 'transparent',
-              border: 'none', cursor: 'pointer', textAlign: 'left',
-              color: active === i ? accent : '#8892b0',
-              fontSize: '13px', fontFamily: "'Fira Code', monospace",
-              letterSpacing: '0.05em', transition: 'all 0.2s',
-              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
-            }}>
-              {e.company.split(' — ')[0]}
-            </button>
-          ))}
-        </div>
-        {/* Content */}
-        <div style={{ padding: '0 0 0 28px' }}>
-          <h3 style={{ color: '#ccd6f6', fontSize: '20px', fontWeight: 500, marginBottom: '4px' }}>
-            {exp[active].role}{' '}
-            <span style={{ color: accent }}>@ {exp[active].company.split(' — ')[0]}</span>
-          </h3>
-          <p style={{ color: '#495670', fontSize: '13px', fontFamily: "'Fira Code', monospace", marginBottom: '20px' }}>
-            {exp[active].period}
-          </p>
-          <p style={{ marginBottom: '16px', lineHeight: 1.7 }}>{exp[active].desc}</p>
-          <ul style={{ listStyle: 'none', marginBottom: '20px' }}>
-            {exp[active].bullets.map((b, i) => (
-              <li key={i} style={{ display: 'flex', gap: '10px', marginBottom: '8px', fontSize: '14px' }}>
-                <span style={{ color: accent, marginTop: '5px', flexShrink: 0, fontSize: '10px' }}>▹</span>
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {exp[active].tags.map(t => <Tag key={t} label={t} accent={accent} />)}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+// Scroll spy + smooth scroll
+(function () {
+  const sections = ['about', 'experience', 'projects', 'contact'];
+  const links    = document.querySelectorAll('.nav-link');
 
-function ProjectImagePlaceholder({ index, accent, label }) {
-  // Unique mock UI per project
-  const patterns = [
-    // Spotify-like UI
-    () => (
-      <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'12px', padding:'24px', background:'#0d2137' }}>
-        <div style={{ width:'48px', height:'48px', borderRadius:'50%', background:`${accent}22`, border:`2px solid ${accent}44`, display:'flex', alignItems:'center', justifyContent:'center' }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill={`${accent}88`}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill={`${accent}88`}/></svg>
-        </div>
-        <div style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'18px', fontWeight:600 }}>Spotify Viewer</div>
-        <div style={{ color:'#495670', fontSize:'11px', fontFamily:"'Fira Code',monospace" }}>Profile · Stats · Playlists</div>
-        <div style={{ width:'100%', maxWidth:'240px', display:'flex', flexDirection:'column', gap:'8px', marginTop:'8px' }}>
-          {['Top Artists', 'Top Tracks', 'Recently Played'].map(r => (
-            <div key={r} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 10px', background:'#112240', borderRadius:'4px', fontSize:'11px' }}>
-              <span style={{ color:'#8892b0' }}>{r}</span>
-              <span style={{ color:accent, fontSize:'10px', fontFamily:"'Fira Code',monospace" }}>→</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    ),
-    // Pricing configurator UI
-    () => (
-      <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', gap:'10px', padding:'24px', background:'#0d2137' }}>
-        <div style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', marginBottom:'4px' }}>Precificador</div>
-        {[['Plano Básico','R$ 299'], ['Plano Pro','R$ 599'], ['Plano Enterprise','R$ 1.199']].map(([plan, price]) => (
-          <div key={plan} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'#112240', borderRadius:'4px', border:'1px solid #233554' }}>
-            <span style={{ color:'#8892b0', fontSize:'12px' }}>{plan}</span>
-            <span style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', fontWeight:600 }}>{price}</span>
-          </div>
-        ))}
-        <div style={{ marginTop:'auto', padding:'10px 14px', background:`${accent}22`, borderRadius:'4px', border:`1px solid ${accent}44`, textAlign:'center' }}>
-          <span style={{ color: accent, fontSize:'12px', fontFamily:"'Fira Code',monospace" }}>Gerar Proposta →</span>
-        </div>
-      </div>
-    )
-  ];
-  const Render = patterns[index % patterns.length];
-  return <Render />;
-}
+  function updateNav() {
+    var scrollY   = window.scrollY + 200;
+    var current   = 'about';
 
-function FeaturedProject({ p, index, accent }) {
-  const isEven = index % 2 === 0;
-  return (
-    <div style={{ position: 'relative', marginBottom: '80px' }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        alignItems: 'center',
-        gap: '0'
-      }}>
-        {/* Image side */}
-        <div style={{
-          gridColumn: isEven ? '1' : '2',
-          gridRow: '1',
-          borderRadius: '4px',
-          overflow: 'hidden',
-          height: '340px',
-          background: `${accent}18`,
-          position: 'relative'
-        }}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: `${accent}18`,
-            transition: 'background 0.3s'
-          }} />
-          <ProjectImagePlaceholder index={index} accent={accent} label={p.name} />
-        </div>
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = id;
+    });
 
-        {/* Text side */}
-        <div style={{
-          gridColumn: isEven ? '2' : '1',
-          gridRow: '1',
-          position: 'relative', zIndex: 2,
-          textAlign: isEven ? 'right' : 'left',
-          padding: isEven ? '0 0 0 0' : '0',
-          paddingLeft: isEven ? '0' : '0'
-        }}>
-          <p style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', marginBottom:'8px', letterSpacing:'0.05em' }}>
-            Projeto em Destaque
-          </p>
-          <h3 style={{ color:'#ccd6f6', fontSize:'24px', fontWeight:700, marginBottom:'24px' }}>
-            {p.name}
-          </h3>
+    links.forEach(function (link) {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
 
-          {/* Description card floating */}
-          <div style={{
-            background:'#112240',
-            padding:'24px',
-            borderRadius:'4px',
-            boxShadow:'0 10px 30px rgba(0,0,0,0.5)',
-            marginBottom:'20px',
-            position: 'relative',
-            zIndex: 3
-          }}>
-            <p style={{ fontSize:'14px', lineHeight:1.75, color:'#a8b2d8' }}>{p.desc}</p>
-          </div>
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var id = link.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+    });
+  });
 
-          {/* Tags */}
-          <div style={{
-            display:'flex', flexWrap:'wrap', gap:'16px',
-            justifyContent: isEven ? 'flex-end' : 'flex-start',
-            marginBottom:'16px',
-            fontFamily:"'Fira Code',monospace", fontSize:'13px', color:'#8892b0'
-          }}>
-            {p.tags.map(t => <span key={t}>{t}</span>)}
-          </div>
-
-          {/* Icons */}
-          <div style={{ display:'flex', gap:'14px', justifyContent: isEven ? 'flex-end' : 'flex-start' }}>
-            {p.github && (
-              <a href={p.github} target="_blank" rel="noreferrer" style={{ color:'#a8b2d8', transition:'color 0.2s, transform 0.2s', display:'flex' }}
-                 onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                 onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-                <GithubIcon />
-              </a>
-            )}
-            {p.live && (
-              <a href={p.live} target="_blank" rel="noreferrer" style={{ color:'#a8b2d8', transition:'color 0.2s, transform 0.2s', display:'flex' }}
-                 onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                 onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-                <ExternalIcon />
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function OtherProjectCard({ p, accent }) {
-  return (
-    <div style={{
-      background: '#112240', borderRadius: '4px', padding: '28px',
-      border: '1px solid #1d3461',
-      display: 'flex', flexDirection: 'column', gap: '0',
-      transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
-      cursor: 'default'
-    }}
-    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = `${accent}44`; }}
-    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#1d3461'; }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
-        <div style={{ color: `${accent}99` }}><FolderIcon /></div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          {p.github && (
-            <a href={p.github} target="_blank" rel="noreferrer" style={{ color: '#a8b2d8', transition: 'color 0.2s' }}
-               onMouseEnter={e => e.currentTarget.style.color = accent}
-               onMouseLeave={e => e.currentTarget.style.color = '#a8b2d8'}>
-              <GithubIcon />
-            </a>
-          )}
-          {p.live && (
-            <a href={p.live} target="_blank" rel="noreferrer" style={{ color: '#a8b2d8', transition: 'color 0.2s' }}
-               onMouseEnter={e => e.currentTarget.style.color = accent}
-               onMouseLeave={e => e.currentTarget.style.color = '#a8b2d8'}>
-              <ExternalIcon />
-            </a>
-          )}
-        </div>
-      </div>
-      <h3 style={{ color: '#ccd6f6', fontSize: '17px', fontWeight: 600, marginBottom: '10px', lineHeight: 1.3 }}>{p.name}</h3>
-      <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#8892b0', marginBottom: '24px', flex: 1 }}>{p.desc}</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', fontFamily: "'Fira Code', monospace", fontSize: '12px', color: '#495670', marginTop: 'auto' }}>
-        {p.tags.map(t => <span key={t}>{t}</span>)}
-      </div>
-    </div>
-  );
-}
-
-function ProjectsSection({ accent }) {
-  return (
-    <section id="projects" style={{ marginBottom: '100px' }}>
-      <SectionHeader number={3} label="Projetos em Destaque" accent={accent} />
-      {data.projects.map((p, i) => (
-        <FeaturedProject key={i} p={p} index={i} accent={accent} />
-      ))}
-
-      {/* Other projects */}
-      <div style={{ marginTop: '60px', marginBottom: '32px' }}>
-        <SectionHeader number={4} label="Outros Projetos" accent={accent} />
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {data.otherProjects.map((p, i) => (
-          <OtherProjectCard key={i} p={p} accent={accent} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ContactSection({ accent }) {
-  return (
-    <section id="contact" style={{ marginBottom: '100px', textAlign: 'center', padding: '0 40px' }}>
-      <p style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px', marginBottom: '16px' }}>
-        04. O que vem a seguir?
-      </p>
-      <h2 style={{ color: '#ccd6f6', fontSize: '48px', fontWeight: 600, marginBottom: '20px', lineHeight: 1.1 }}>
-        Vamos Conversar?
-      </h2>
-      <p style={{ maxWidth: '480px', margin: '0 auto 40px', lineHeight: 1.7, fontSize: '15px' }}>
-        Estou aberto a novas oportunidades. Se você tem uma ideia, projeto ou só quer trocar uma ideia, minha caixa de entrada está sempre aberta.
-      </p>
-      <a href={`mailto:${data.social.email}`} style={{
-        display: 'inline-flex', alignItems: 'center', gap: '8px',
-        border: `1px solid ${accent}`, color: accent,
-        padding: '16px 28px', borderRadius: '4px',
-        textDecoration: 'none', fontSize: '14px',
-        fontFamily: "'Fira Code', monospace", letterSpacing: '0.05em',
-        transition: 'all 0.2s', background: 'transparent'
-      }}
-      onMouseEnter={e => { e.currentTarget.style.background = `${accent}1a`; }}
-      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-        <EmailIcon /> Diz um oi
-      </a>
-    </section>
-  );
-}
-
-// ─── MAIN APP ─────────────────────────────────────────────
-function App() {
-  const [activeSection, setActiveSection] = useState('about');
-  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
-  const accent = tweaks.accent;
-
-  // Tweaks panel wiring
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('visible');
-      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
-    };
-    window.addEventListener('message', handler);
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-
-    const accentEl = document.getElementById('tw-accent');
-    const bgEl = document.getElementById('tw-bg');
-    const fontEl = document.getElementById('tw-font');
-    const sizeEl = document.getElementById('tw-size');
-
-    const apply = () => {
-      const next = {
-        accent: accentEl.value,
-        bg: bgEl.value,
-        font: fontEl.value,
-        fontSize: parseInt(sizeEl.value)
-      };
-      document.body.style.background = next.bg;
-      document.body.style.fontSize = next.fontSize + 'px';
-      document.body.style.fontFamily = next.font;
-      setTweaks(next);
-      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
-    };
-    [accentEl, bgEl, fontEl, sizeEl].forEach(el => el?.addEventListener('input', apply));
-    return () => window.removeEventListener('message', handler);
-  }, []);
-
-  // Scroll spy
-  useEffect(() => {
-    const sections = ['about', 'experience', 'projects', 'contact'];
-    const handler = () => {
-      const scrollY = window.scrollY + 200;
-      for (let s of sections) {
-        const el = document.getElementById(s);
-        if (el && el.offsetTop <= scrollY) setActiveSection(s);
-      }
-    };
-    window.addEventListener('scroll', handler);
-    return () => window.removeEventListener('scroll', handler);
-  }, []);
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
-  };
-
-  const sidebarStyle = {
-    position: 'sticky', top: 0, height: '100vh',
-    display: 'flex', flexDirection: 'column',
-    justifyContent: 'space-between', padding: '80px 0'
-  };
-
-  return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 48px', display: 'grid', gridTemplateColumns: '360px 1fr', gap: '0 80px' }}>
-      {/* LEFT SIDEBAR */}
-      <div style={sidebarStyle}>
-        <div>
-          {/* Intro */}
-          <p style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px', marginBottom: '16px' }}>
-            Olá, meu nome é
-          </p>
-          <h1 style={{ color: '#ccd6f6', fontSize: '48px', fontWeight: 700, lineHeight: 1.05, marginBottom: '8px', letterSpacing: '-0.02em' }}>
-            Cherlau Prado.
-          </h1>
-          <h2 style={{ color: '#8892b0', fontSize: '28px', fontWeight: 500, marginBottom: '20px', lineHeight: 1.2 }}>
-            Eu construo coisas <br />para a web.
-          </h2>
-          <p style={{ maxWidth: '280px', lineHeight: 1.7, fontSize: '15px' }}>
-            {data.intro}
-          </p>
-
-          {/* Nav */}
-          <nav style={{ marginTop: '48px' }}>
-            <ul style={{ listStyle: 'none' }}>
-              {[['about', 'Sobre Mim'], ['experience', 'Experiência'], ['projects', 'Projetos'], ['contact', 'Contato']].map(([id, label]) => (
-                <NavItem key={id} id={id} label={label} activeSection={activeSection} onClick={scrollTo} />
-              ))}
-            </ul>
-          </nav>
-        </div>
-
-        {/* Social links */}
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          {[
-            { href: data.social.github, icon: <GithubIcon /> },
-            { href: data.social.linkedin, icon: <LinkedinIcon /> },
-            { href: `mailto:${data.social.email}`, icon: <EmailIcon /> }
-          ].map(({ href, icon }) => (
-            <a key={href} href={href} target="_blank" rel="noreferrer" style={{
-              color: '#a8b2d8', transition: 'color 0.2s, transform 0.2s',
-              display: 'flex', alignItems: 'center'
-            }}
-            onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-              {icon}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* RIGHT CONTENT */}
-      <main style={{ padding: '100px 0' }}>
-        <AboutSection accent={accent} />
-        <ExperienceSection accent={accent} />
-        <ProjectsSection accent={accent} />
-        <ContactSection accent={accent} />
-
-        {/* Footer */}
-        <footer style={{ textAlign: 'center', padding: '20px 0 40px', borderTop: '1px solid #233554' }}>
-          <a href={data.social.github} target="_blank" rel="noreferrer" style={{
-            color: '#495670', fontSize: '13px', fontFamily: "'Fira Code', monospace",
-            textDecoration: 'none', transition: 'color 0.2s',
-            display: 'inline-flex', alignItems: 'center', gap: '6px'
-          }}
-          onMouseEnter={e => e.currentTarget.style.color = accent}
-          onMouseLeave={e => e.currentTarget.style.color = '#495670'}>
-            Desenvolvido por Cherlau Prado
-          </a>
-        </footer>
-      </main>
-    </div>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  window.addEventListener('scroll', updateNav);
+  updateNav();
+})();
 </script>
+
 </body>
 </html>
