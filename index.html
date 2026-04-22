@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cherlau Prado — Desenvolvedor Front-End</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Calibre:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=SF+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0a192f;
+      color: #8892b0;
+      font-family: 'Inter', 'Calibre', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a192f; }
+    ::-webkit-scrollbar-thumb { background: #233554; border-radius: 3px; }
+    ::selection { background: #64ffda33; color: #ccd6f6; }
+
+    /* Tweaks panel */
+    #tweaks-panel {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: #112240; border: 1px solid #233554;
+      border-radius: 12px; padding: 20px; width: 240px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      display: none;
+      font-size: 13px;
+    }
+    #tweaks-panel.visible { display: block; }
+    #tweaks-panel h3 { color: #64ffda; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .tweak-row { margin-bottom: 14px; }
+    .tweak-row label { display: block; color: #a8b2d8; margin-bottom: 6px; font-size: 12px; }
+    .tweak-row input[type=color] { width: 100%; height: 32px; border: 1px solid #233554; border-radius: 6px; background: #0a192f; cursor: pointer; }
+    .tweak-row select { width: 100%; padding: 6px 8px; border: 1px solid #233554; border-radius: 6px; background: #0a192f; color: #ccd6f6; font-size: 12px; }
+    .tweak-row input[type=range] { width: 100%; accent-color: #64ffda; }
+  </style>
+</head>
+<body>
+
+<div id="root"></div>
+<div id="tweaks-panel">
+  <h3>Tweaks</h3>
+  <div class="tweak-row">
+    <label>Cor de destaque</label>
+    <input type="color" id="tw-accent" value="#64ffda" />
+  </div>
+  <div class="tweak-row">
+    <label>Cor de fundo</label>
+    <input type="color" id="tw-bg" value="#0a192f" />
+  </div>
+  <div class="tweak-row">
+    <label>Fonte</label>
+    <select id="tw-font">
+      <option value="'Inter', sans-serif">Inter</option>
+      <option value="'Fira Code', monospace">Fira Code</option>
+      <option value="Georgia, serif">Georgia</option>
+      <option value="'Helvetica Neue', sans-serif">Helvetica</option>
+    </select>
+  </div>
+  <div class="tweak-row">
+    <label>Tamanho do texto base</label>
+    <input type="range" id="tw-size" min="13" max="19" step="1" value="16" />
+  </div>
+</div>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#64ffda",
+  "bg": "#0a192f",
+  "font": "'Inter', sans-serif",
+  "fontSize": 16
+}/*EDITMODE-END*/;
+
+// ─── DATA ────────────────────────────────────────────────
+const data = {
+  name: "Cherlau Prado",
+  title: "Desenvolvedor Front-End Pleno",
+  tagline: "Eu construo coisas para a web.",
+  intro: "Especialista em Vue.js e Nuxt.js com quase 4 anos de experiência em produtos digitais escaláveis. Apaixonado por performance, acessibilidade e arquitetura front-end limpa.",
+  about: [
+    "Sou um desenvolvedor front-end pleno com quase 4 anos de experiência construindo produtos digitais escaláveis. Especialista em <strong>Vue.js 2/3</strong> e <strong>Nuxt.js</strong>, com forte atuação em performance (Core Web Vitals), acessibilidade (WCAG) e arquitetura front-end.",
+    "Atualmente trabalho na <strong style='color:#ccd6f6'>App Facilita</strong>, onde lidero o desenvolvimento do front-end de um CRM utilizado por +300 clientes e +50 mil usuários ativos. Já atuei na migração de grandes aplicações, criação de Design Systems e mentoria técnica.",
+    "Também tenho experiência com <strong>React</strong> e <strong>Next.js</strong>, o que me permite transitar entre diferentes ecossistemas com facilidade. Fora do trabalho, gosto de explorar novas tecnologias e contribuir para projetos pessoais.",
+    "Aqui estão algumas tecnologias com as quais tenho trabalhado recentemente:"
+  ],
+  skills: [
+    "Vue.js 2 / Vue.js 3", "Nuxt.js", "React / Next.js",
+    "TypeScript", "Tailwind CSS", "Docker"
+  ],
+  experience: [
+    {
+      period: "Jun 2025 — Presente",
+      role: "Desenvolvedor Front-End Pleno (Vue.js)",
+      company: "App Facilita",
+      url: "#",
+      desc: "Responsável pela evolução do CRM e integrações utilizadas por +300 clientes e +50 mil usuários ativos. Lidero a construção do front-end do Connector com Vue.js 3 e Nuxt.js, definindo a arquitetura da aplicação com Composition API e integração desacoplada com APIs REST.",
+      bullets: [
+        "Migração do sistema de Vue.js 2 para Vue.js 3, melhorando performance e estabilidade.",
+        "Implementei Lazy Loading e Code Splitting, reduzindo o LCP e melhorando SEO.",
+        "Construção do Design System interno, padronizando UI e componentes.",
+        "Mentoria técnica para devs júnior e Code Reviews focados em qualidade."
+      ],
+      tags: ["Vue.js 3", "Nuxt.js", "TypeScript", "Pinia", "REST APIs", "Design System"]
+    },
+    {
+      period: "Mai 2024 — Mai 2025",
+      role: "Desenvolvedor Front-End Junior",
+      company: "App Facilita",
+      url: "#",
+      desc: "Desenvolvimento e evolução do CRM com Vue.js 2, Vue.js 3 e Nuxt.js, convertendo protótipos do Figma em interfaces responsivas com alta fidelidade visual.",
+      bullets: [
+        "Corrigi mais de 80 bugs críticos, garantindo compatibilidade e responsividade.",
+        "Integrei APIs RESTful complexas com tratamento de estados de carregamento e erros.",
+        "Participei ativamente das cerimônias Scrum, contribuindo para refinamento de tarefas."
+      ],
+      tags: ["Vue.js 2", "Vue.js 3", "Nuxt.js", "Vuex", "REST APIs", "Figma"]
+    },
+    {
+      period: "Nov 2023 — Abr 2024",
+      role: "Estagiário Front-End",
+      company: "App Facilita",
+      url: "#",
+      desc: "Apoiei o time no desenvolvimento de novas funcionalidades do CRM com Vue.js 2, realizando ajustes de layout e implementação de componentes a partir de protótipos Figma.",
+      bullets: [
+        "Correções de bugs visuais e funcionais sob supervisão.",
+        "Aprimorei conhecimentos em APIs REST, Git e boas práticas de componentização."
+      ],
+      tags: ["Vue.js 2", "Git", "REST APIs"]
+    },
+    {
+      period: "Nov 2022 — Out 2023",
+      role: "Estagiário de Desenvolvimento Web (React)",
+      company: "PrimeSoftware — ERP",
+      url: "#",
+      desc: "Desenvolvimento de componentes reutilizáveis com React (Hooks), integração com APIs REST e colaboração com a equipe de marketing para páginas otimizadas para SEO.",
+      bullets: [
+        "Gerenciamento de estado com Context API / Redux.",
+        "Implementação de melhorias de performance, reduzindo re-renderizações desnecessárias."
+      ],
+      tags: ["React", "Redux", "Context API", "REST APIs", "SEO"]
+    }
+  ],
+  otherProjects: [
+    {
+      name: "CRM Dashboard — App Facilita",
+      desc: "Evolução do painel principal do CRM, com melhorias de performance, acessibilidade e novas integrações. Migração de Vue.js 2 para Vue.js 3 com Composition API.",
+      tags: ["Vue.js 3", "Nuxt.js", "Pinia", "REST API"],
+      github: "https://github.com/cherlau",
+      live: null
+    },
+    {
+      name: "Design System Interno",
+      desc: "Construção do Design System da App Facilita, padronizando componentes, tokens de design e guidelines para o time de front-end.",
+      tags: ["Vue.js", "Storybook", "CSS", "Figma"],
+      github: null,
+      live: "#"
+    },
+    {
+      name: "Connector — Módulo de Integrações",
+      desc: "Front-end do módulo Connector com arquitetura modular por domínio, separação de responsabilidades e integração desacoplada com APIs REST.",
+      tags: ["Vue.js 3", "Nuxt.js", "TypeScript", "Axios"],
+      github: null,
+      live: null
+    }
+  ],
+  projects: [
+    {
+      name: "Spotify Profile Viewer",
+      desc: "Projeto pessoal focado em Server-Side Rendering (SSR) e SEO com a API do Spotify. Implementei busca debounced e paginação infinita para melhor experiência do usuário.",
+      tags: ["React", "TypeScript", "React Query", "Vite", "SSR"],
+      github: "https://github.com/cherlau",
+      live: null
+    },
+    {
+      name: "Precificador de Proposta via Planilha",
+      desc: "Configurador de planos em Vue.js que faz a precificação alimentada por Google Sheets, utilizado pelo time de vendas. Módulos, descontos e condições de pagamento gerenciados por planilha — sem intervenção técnica.",
+      tags: ["Vue.js", "Pinia", "Axios", "Google Sheets API"],
+      github: "https://github.com/cherlau",
+      live: null
+    }
+  ],
+  social: {
+    github: "https://github.com/cherlau",
+    linkedin: "https://linkedin.com/in/cherlau-prado",
+    email: "cherlau_prado@hotmail.com"
+  }
+};
+
+// ─── ICONS ───────────────────────────────────────────────
+const GithubIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  </svg>
+);
+const LinkedinIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+  </svg>
+);
+const EmailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+  </svg>
+);
+const ExternalIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+  </svg>
+);
+const FolderIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+  </svg>
+);
+const ArrowIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+  </svg>
+);
+
+// ─── COMPONENTS ──────────────────────────────────────────
+const { useState, useEffect, useRef } = React;
+
+function Tag({ label, accent }) {
+  return (
+    <span style={{
+      display: 'inline-block',
+      background: `${accent}1a`,
+      color: accent,
+      fontSize: '11px',
+      fontFamily: "'Fira Code', monospace",
+      padding: '3px 10px',
+      borderRadius: '4px',
+      marginRight: '6px',
+      marginBottom: '6px',
+      letterSpacing: '0.05em',
+      fontWeight: 500,
+      whiteSpace: 'nowrap'
+    }}>
+      {label}
+    </span>
+  );
+}
+
+function NavItem({ id, label, activeSection, onClick }) {
+  const active = activeSection === id;
+  return (
+    <li style={{ marginBottom: '4px' }}>
+      <a
+        href={`#${id}`}
+        onClick={(e) => { e.preventDefault(); onClick(id); }}
+        style={{
+          display: 'flex', alignItems: 'center', gap: '12px',
+          textDecoration: 'none', padding: '6px 0',
+          transition: 'all 0.2s',
+          color: active ? '#ccd6f6' : '#8892b0',
+        }}
+      >
+        <span style={{
+          display: 'block',
+          height: '1px',
+          width: active ? '48px' : '24px',
+          background: active ? '#ccd6f6' : '#495670',
+          transition: 'all 0.3s ease',
+          flexShrink: 0
+        }} />
+        <span style={{
+          fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase',
+          fontWeight: active ? '600' : '400',
+          transition: 'all 0.2s'
+        }}>
+          {label}
+        </span>
+      </a>
+    </li>
+  );
+}
+
+function SectionHeader({ number, label, accent }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
+      <span style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px' }}>
+        0{number}.
+      </span>
+      <span style={{ color: '#ccd6f6', fontSize: '22px', fontWeight: 600, letterSpacing: '0.02em' }}>
+        {label}
+      </span>
+      <div style={{ flex: 1, height: '1px', background: '#233554', maxWidth: '260px' }} />
+    </div>
+  );
+}
+
+function AboutSection({ accent }) {
+  const listStyle = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 0', listStyle: 'none', marginTop: '16px' };
+  return (
+    <section id="about" style={{ marginBottom: '100px' }}>
+      <SectionHeader number={1} label="Sobre Mim" accent={accent} />
+      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '40px', alignItems: 'start' }}>
+        <div>
+          {data.about.map((p, i) => (
+            <p key={i} style={{ marginBottom: '16px', lineHeight: 1.7 }}
+               dangerouslySetInnerHTML={{ __html: p.replace(/<strong>/g, `<strong style="color:#ccd6f6">`) }} />
+          ))}
+          <ul style={listStyle}>
+            {data.skills.map(s => (
+              <li key={s} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', padding: '3px 0', color: '#8892b0', fontFamily: "'Fira Code', monospace" }}>
+                <span style={{ color: accent, fontSize: '10px' }}>▹</span>
+                {s}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Photo */}
+        <div style={{ position: 'relative' }}>
+          <div style={{
+            width: '100%', paddingBottom: '100%', position: 'relative',
+            borderRadius: '4px', overflow: 'hidden',
+            border: `2px solid ${accent}66`,
+          }}>
+            <img
+              src="uploads/1700061191174.jpg"
+              alt="Cherlau Prado"
+              style={{
+                position: 'absolute', inset: 0,
+                width: '100%', height: '100%',
+                objectFit: 'cover', objectPosition: 'center top',
+                filter: 'grayscale(20%)',
+                transition: 'filter 0.3s'
+              }}
+              onMouseEnter={e => e.currentTarget.style.filter = 'grayscale(0%)'}
+              onMouseLeave={e => e.currentTarget.style.filter = 'grayscale(20%)'}
+            />
+          </div>
+          <div style={{
+            position: 'absolute', top: '12px', left: '12px', right: '-12px', bottom: '-12px',
+            border: `2px solid ${accent}55`, borderRadius: '4px', zIndex: -1,
+            pointerEvents: 'none'
+          }} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ExperienceSection({ accent }) {
+  const [active, setActive] = useState(0);
+  const exp = data.experience;
+  return (
+    <section id="experience" style={{ marginBottom: '100px' }}>
+      <SectionHeader number={2} label="Onde Trabalhei" accent={accent} />
+      <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '0' }}>
+        {/* Tab list */}
+        <div style={{ borderLeft: '2px solid #233554', position: 'relative' }}>
+          <div style={{
+            position: 'absolute', left: '-2px', top: `${active * 46}px`, width: '2px',
+            height: '46px', background: accent, transition: 'top 0.3s ease'
+          }} />
+          {exp.map((e, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{
+              display: 'block', width: '100%', padding: '12px 20px',
+              background: active === i ? `${accent}10` : 'transparent',
+              border: 'none', cursor: 'pointer', textAlign: 'left',
+              color: active === i ? accent : '#8892b0',
+              fontSize: '13px', fontFamily: "'Fira Code', monospace",
+              letterSpacing: '0.05em', transition: 'all 0.2s',
+              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+            }}>
+              {e.company.split(' — ')[0]}
+            </button>
+          ))}
+        </div>
+        {/* Content */}
+        <div style={{ padding: '0 0 0 28px' }}>
+          <h3 style={{ color: '#ccd6f6', fontSize: '20px', fontWeight: 500, marginBottom: '4px' }}>
+            {exp[active].role}{' '}
+            <span style={{ color: accent }}>@ {exp[active].company.split(' — ')[0]}</span>
+          </h3>
+          <p style={{ color: '#495670', fontSize: '13px', fontFamily: "'Fira Code', monospace", marginBottom: '20px' }}>
+            {exp[active].period}
+          </p>
+          <p style={{ marginBottom: '16px', lineHeight: 1.7 }}>{exp[active].desc}</p>
+          <ul style={{ listStyle: 'none', marginBottom: '20px' }}>
+            {exp[active].bullets.map((b, i) => (
+              <li key={i} style={{ display: 'flex', gap: '10px', marginBottom: '8px', fontSize: '14px' }}>
+                <span style={{ color: accent, marginTop: '5px', flexShrink: 0, fontSize: '10px' }}>▹</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {exp[active].tags.map(t => <Tag key={t} label={t} accent={accent} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectImagePlaceholder({ index, accent, label }) {
+  // Unique mock UI per project
+  const patterns = [
+    // Spotify-like UI
+    () => (
+      <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'12px', padding:'24px', background:'#0d2137' }}>
+        <div style={{ width:'48px', height:'48px', borderRadius:'50%', background:`${accent}22`, border:`2px solid ${accent}44`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill={`${accent}88`}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill={`${accent}88`}/></svg>
+        </div>
+        <div style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'18px', fontWeight:600 }}>Spotify Viewer</div>
+        <div style={{ color:'#495670', fontSize:'11px', fontFamily:"'Fira Code',monospace" }}>Profile · Stats · Playlists</div>
+        <div style={{ width:'100%', maxWidth:'240px', display:'flex', flexDirection:'column', gap:'8px', marginTop:'8px' }}>
+          {['Top Artists', 'Top Tracks', 'Recently Played'].map(r => (
+            <div key={r} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'6px 10px', background:'#112240', borderRadius:'4px', fontSize:'11px' }}>
+              <span style={{ color:'#8892b0' }}>{r}</span>
+              <span style={{ color:accent, fontSize:'10px', fontFamily:"'Fira Code',monospace" }}>→</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+    // Pricing configurator UI
+    () => (
+      <div style={{ width:'100%', height:'100%', display:'flex', flexDirection:'column', gap:'10px', padding:'24px', background:'#0d2137' }}>
+        <div style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', marginBottom:'4px' }}>Precificador</div>
+        {[['Plano Básico','R$ 299'], ['Plano Pro','R$ 599'], ['Plano Enterprise','R$ 1.199']].map(([plan, price]) => (
+          <div key={plan} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 14px', background:'#112240', borderRadius:'4px', border:'1px solid #233554' }}>
+            <span style={{ color:'#8892b0', fontSize:'12px' }}>{plan}</span>
+            <span style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', fontWeight:600 }}>{price}</span>
+          </div>
+        ))}
+        <div style={{ marginTop:'auto', padding:'10px 14px', background:`${accent}22`, borderRadius:'4px', border:`1px solid ${accent}44`, textAlign:'center' }}>
+          <span style={{ color: accent, fontSize:'12px', fontFamily:"'Fira Code',monospace" }}>Gerar Proposta →</span>
+        </div>
+      </div>
+    )
+  ];
+  const Render = patterns[index % patterns.length];
+  return <Render />;
+}
+
+function FeaturedProject({ p, index, accent }) {
+  const isEven = index % 2 === 0;
+  return (
+    <div style={{ position: 'relative', marginBottom: '80px' }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        alignItems: 'center',
+        gap: '0'
+      }}>
+        {/* Image side */}
+        <div style={{
+          gridColumn: isEven ? '1' : '2',
+          gridRow: '1',
+          borderRadius: '4px',
+          overflow: 'hidden',
+          height: '340px',
+          background: `${accent}18`,
+          position: 'relative'
+        }}>
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: `${accent}18`,
+            transition: 'background 0.3s'
+          }} />
+          <ProjectImagePlaceholder index={index} accent={accent} label={p.name} />
+        </div>
+
+        {/* Text side */}
+        <div style={{
+          gridColumn: isEven ? '2' : '1',
+          gridRow: '1',
+          position: 'relative', zIndex: 2,
+          textAlign: isEven ? 'right' : 'left',
+          padding: isEven ? '0 0 0 0' : '0',
+          paddingLeft: isEven ? '0' : '0'
+        }}>
+          <p style={{ color: accent, fontFamily:"'Fira Code',monospace", fontSize:'13px', marginBottom:'8px', letterSpacing:'0.05em' }}>
+            Projeto em Destaque
+          </p>
+          <h3 style={{ color:'#ccd6f6', fontSize:'24px', fontWeight:700, marginBottom:'24px' }}>
+            {p.name}
+          </h3>
+
+          {/* Description card floating */}
+          <div style={{
+            background:'#112240',
+            padding:'24px',
+            borderRadius:'4px',
+            boxShadow:'0 10px 30px rgba(0,0,0,0.5)',
+            marginBottom:'20px',
+            position: 'relative',
+            zIndex: 3
+          }}>
+            <p style={{ fontSize:'14px', lineHeight:1.75, color:'#a8b2d8' }}>{p.desc}</p>
+          </div>
+
+          {/* Tags */}
+          <div style={{
+            display:'flex', flexWrap:'wrap', gap:'16px',
+            justifyContent: isEven ? 'flex-end' : 'flex-start',
+            marginBottom:'16px',
+            fontFamily:"'Fira Code',monospace", fontSize:'13px', color:'#8892b0'
+          }}>
+            {p.tags.map(t => <span key={t}>{t}</span>)}
+          </div>
+
+          {/* Icons */}
+          <div style={{ display:'flex', gap:'14px', justifyContent: isEven ? 'flex-end' : 'flex-start' }}>
+            {p.github && (
+              <a href={p.github} target="_blank" rel="noreferrer" style={{ color:'#a8b2d8', transition:'color 0.2s, transform 0.2s', display:'flex' }}
+                 onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                 onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                <GithubIcon />
+              </a>
+            )}
+            {p.live && (
+              <a href={p.live} target="_blank" rel="noreferrer" style={{ color:'#a8b2d8', transition:'color 0.2s, transform 0.2s', display:'flex' }}
+                 onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                 onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                <ExternalIcon />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OtherProjectCard({ p, accent }) {
+  return (
+    <div style={{
+      background: '#112240', borderRadius: '4px', padding: '28px',
+      border: '1px solid #1d3461',
+      display: 'flex', flexDirection: 'column', gap: '0',
+      transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+      cursor: 'default'
+    }}
+    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = `${accent}44`; }}
+    onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#1d3461'; }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
+        <div style={{ color: `${accent}99` }}><FolderIcon /></div>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          {p.github && (
+            <a href={p.github} target="_blank" rel="noreferrer" style={{ color: '#a8b2d8', transition: 'color 0.2s' }}
+               onMouseEnter={e => e.currentTarget.style.color = accent}
+               onMouseLeave={e => e.currentTarget.style.color = '#a8b2d8'}>
+              <GithubIcon />
+            </a>
+          )}
+          {p.live && (
+            <a href={p.live} target="_blank" rel="noreferrer" style={{ color: '#a8b2d8', transition: 'color 0.2s' }}
+               onMouseEnter={e => e.currentTarget.style.color = accent}
+               onMouseLeave={e => e.currentTarget.style.color = '#a8b2d8'}>
+              <ExternalIcon />
+            </a>
+          )}
+        </div>
+      </div>
+      <h3 style={{ color: '#ccd6f6', fontSize: '17px', fontWeight: 600, marginBottom: '10px', lineHeight: 1.3 }}>{p.name}</h3>
+      <p style={{ fontSize: '14px', lineHeight: 1.7, color: '#8892b0', marginBottom: '24px', flex: 1 }}>{p.desc}</p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', fontFamily: "'Fira Code', monospace", fontSize: '12px', color: '#495670', marginTop: 'auto' }}>
+        {p.tags.map(t => <span key={t}>{t}</span>)}
+      </div>
+    </div>
+  );
+}
+
+function ProjectsSection({ accent }) {
+  return (
+    <section id="projects" style={{ marginBottom: '100px' }}>
+      <SectionHeader number={3} label="Projetos em Destaque" accent={accent} />
+      {data.projects.map((p, i) => (
+        <FeaturedProject key={i} p={p} index={i} accent={accent} />
+      ))}
+
+      {/* Other projects */}
+      <div style={{ marginTop: '60px', marginBottom: '32px' }}>
+        <SectionHeader number={4} label="Outros Projetos" accent={accent} />
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {data.otherProjects.map((p, i) => (
+          <OtherProjectCard key={i} p={p} accent={accent} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ContactSection({ accent }) {
+  return (
+    <section id="contact" style={{ marginBottom: '100px', textAlign: 'center', padding: '0 40px' }}>
+      <p style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px', marginBottom: '16px' }}>
+        04. O que vem a seguir?
+      </p>
+      <h2 style={{ color: '#ccd6f6', fontSize: '48px', fontWeight: 600, marginBottom: '20px', lineHeight: 1.1 }}>
+        Vamos Conversar?
+      </h2>
+      <p style={{ maxWidth: '480px', margin: '0 auto 40px', lineHeight: 1.7, fontSize: '15px' }}>
+        Estou aberto a novas oportunidades. Se você tem uma ideia, projeto ou só quer trocar uma ideia, minha caixa de entrada está sempre aberta.
+      </p>
+      <a href={`mailto:${data.social.email}`} style={{
+        display: 'inline-flex', alignItems: 'center', gap: '8px',
+        border: `1px solid ${accent}`, color: accent,
+        padding: '16px 28px', borderRadius: '4px',
+        textDecoration: 'none', fontSize: '14px',
+        fontFamily: "'Fira Code', monospace", letterSpacing: '0.05em',
+        transition: 'all 0.2s', background: 'transparent'
+      }}
+      onMouseEnter={e => { e.currentTarget.style.background = `${accent}1a`; }}
+      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+        <EmailIcon /> Diz um oi
+      </a>
+    </section>
+  );
+}
+
+// ─── MAIN APP ─────────────────────────────────────────────
+function App() {
+  const [activeSection, setActiveSection] = useState('about');
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const accent = tweaks.accent;
+
+  // Tweaks panel wiring
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('visible');
+      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+    const accentEl = document.getElementById('tw-accent');
+    const bgEl = document.getElementById('tw-bg');
+    const fontEl = document.getElementById('tw-font');
+    const sizeEl = document.getElementById('tw-size');
+
+    const apply = () => {
+      const next = {
+        accent: accentEl.value,
+        bg: bgEl.value,
+        font: fontEl.value,
+        fontSize: parseInt(sizeEl.value)
+      };
+      document.body.style.background = next.bg;
+      document.body.style.fontSize = next.fontSize + 'px';
+      document.body.style.fontFamily = next.font;
+      setTweaks(next);
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
+    };
+    [accentEl, bgEl, fontEl, sizeEl].forEach(el => el?.addEventListener('input', apply));
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  // Scroll spy
+  useEffect(() => {
+    const sections = ['about', 'experience', 'projects', 'contact'];
+    const handler = () => {
+      const scrollY = window.scrollY + 200;
+      for (let s of sections) {
+        const el = document.getElementById(s);
+        if (el && el.offsetTop <= scrollY) setActiveSection(s);
+      }
+    };
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+  };
+
+  const sidebarStyle = {
+    position: 'sticky', top: 0, height: '100vh',
+    display: 'flex', flexDirection: 'column',
+    justifyContent: 'space-between', padding: '80px 0'
+  };
+
+  return (
+    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 48px', display: 'grid', gridTemplateColumns: '360px 1fr', gap: '0 80px' }}>
+      {/* LEFT SIDEBAR */}
+      <div style={sidebarStyle}>
+        <div>
+          {/* Intro */}
+          <p style={{ color: accent, fontFamily: "'Fira Code', monospace", fontSize: '14px', marginBottom: '16px' }}>
+            Olá, meu nome é
+          </p>
+          <h1 style={{ color: '#ccd6f6', fontSize: '48px', fontWeight: 700, lineHeight: 1.05, marginBottom: '8px', letterSpacing: '-0.02em' }}>
+            Cherlau Prado.
+          </h1>
+          <h2 style={{ color: '#8892b0', fontSize: '28px', fontWeight: 500, marginBottom: '20px', lineHeight: 1.2 }}>
+            Eu construo coisas <br />para a web.
+          </h2>
+          <p style={{ maxWidth: '280px', lineHeight: 1.7, fontSize: '15px' }}>
+            {data.intro}
+          </p>
+
+          {/* Nav */}
+          <nav style={{ marginTop: '48px' }}>
+            <ul style={{ listStyle: 'none' }}>
+              {[['about', 'Sobre Mim'], ['experience', 'Experiência'], ['projects', 'Projetos'], ['contact', 'Contato']].map(([id, label]) => (
+                <NavItem key={id} id={id} label={label} activeSection={activeSection} onClick={scrollTo} />
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        {/* Social links */}
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          {[
+            { href: data.social.github, icon: <GithubIcon /> },
+            { href: data.social.linkedin, icon: <LinkedinIcon /> },
+            { href: `mailto:${data.social.email}`, icon: <EmailIcon /> }
+          ].map(({ href, icon }) => (
+            <a key={href} href={href} target="_blank" rel="noreferrer" style={{
+              color: '#a8b2d8', transition: 'color 0.2s, transform 0.2s',
+              display: 'flex', alignItems: 'center'
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#a8b2d8'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              {icon}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* RIGHT CONTENT */}
+      <main style={{ padding: '100px 0' }}>
+        <AboutSection accent={accent} />
+        <ExperienceSection accent={accent} />
+        <ProjectsSection accent={accent} />
+        <ContactSection accent={accent} />
+
+        {/* Footer */}
+        <footer style={{ textAlign: 'center', padding: '20px 0 40px', borderTop: '1px solid #233554' }}>
+          <a href={data.social.github} target="_blank" rel="noreferrer" style={{
+            color: '#495670', fontSize: '13px', fontFamily: "'Fira Code', monospace",
+            textDecoration: 'none', transition: 'color 0.2s',
+            display: 'inline-flex', alignItems: 'center', gap: '6px'
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = accent}
+          onMouseLeave={e => e.currentTarget.style.color = '#495670'}>
+            Desenvolvido por Cherlau Prado
+          </a>
+        </footer>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
