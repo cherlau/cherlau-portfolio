@@ -504,6 +504,9 @@ section { margin-bottom: 100px; }
   z-index: 3;
 }
 
+.featured-project--even .featured-desc { margin-left: -60px; }
+.featured-project--odd  .featured-desc { margin-right: -60px; }
+
 .featured-desc p {
   font-size: 14px;
   line-height: 1.75;
