@@ -886,7 +886,8 @@ footer a:hover { color: var(--accent); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
 	margin-bottom: 22px;
-	justify-content: center;
+	justify-content: space-between;
+	max-width: 360px;
   }
 
   nav ul::-webkit-scrollbar { display: none; }
