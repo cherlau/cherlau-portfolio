@@ -60,12 +60,12 @@ Por não depender de um bundler, não há etapa de build. Basta hospedar os arqu
 
 ## 🎨 Color Reference
 
-| Color         | Hex                                                                  |
-| ------------- | -------------------------------------------------------------------- |
-| Navy          | ![#0a192f](https://via.placeholder.com/10/0a192f?text=+) `#0a192f` |
-| Light Navy    | ![#112240](https://via.placeholder.com/10/112240?text=+) `#112240` |
-| Lightest Navy | ![#233554](https://via.placeholder.com/10/233554?text=+) `#233554` |
-| Slate         | ![#8892b0](https://via.placeholder.com/10/8892b0?text=+) `#8892b0` |
-| Light Slate   | ![#a8b2d8](https://via.placeholder.com/10/a8b2d8?text=+) `#a8b2d8` |
-| White         | ![#ccd6f6](https://via.placeholder.com/10/ccd6f6?text=+) `#ccd6f6` |
-| Green         | ![#64ffda](https://via.placeholder.com/10/64ffda?text=+) `#64ffda` |
+| Color         | Hex                                                                                                           |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| Navy          | ![#0a192f](https://img.shields.io/badge/-%230a192f-0a192f?style=flat-square) `#0a192f` |
+| Light Navy    | ![#112240](https://img.shields.io/badge/-%23112240-112240?style=flat-square) `#112240` |
+| Lightest Navy | ![#233554](https://img.shields.io/badge/-%23233554-233554?style=flat-square) `#233554` |
+| Slate         | ![#8892b0](https://img.shields.io/badge/-%238892b0-8892b0?style=flat-square) `#8892b0` |
+| Light Slate   | ![#a8b2d8](https://img.shields.io/badge/-%23a8b2d8-a8b2d8?style=flat-square) `#a8b2d8` |
+| White         | ![#ccd6f6](https://img.shields.io/badge/-%23ccd6f6-ccd6f6?style=flat-square) `#ccd6f6` |
+| Green         | ![#64ffda](https://img.shields.io/badge/-%2364ffda-64ffda?style=flat-square) `#64ffda` |
