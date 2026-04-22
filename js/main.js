@@ -59,6 +59,38 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   });
 })();
 
+// Video modal
+(function () {
+  var modal    = document.getElementById('video-modal');
+  var iframe   = document.getElementById('video-modal-iframe');
+  var backdrop = modal.querySelector('.video-modal-backdrop');
+  var closeBtn = modal.querySelector('.video-modal-close');
+
+  function openModal(videoId) {
+    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-video-id]').forEach(function (btn) {
+    btn.addEventListener('click', function () { openModal(btn.dataset.videoId); });
+  });
+
+  backdrop.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) closeModal();
+  });
+})();
+
 // Scroll spy + smooth scroll
 (function () {
   const sections = ['about', 'experience', 'projects', 'contact'];

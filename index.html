@@ -264,16 +264,19 @@
       <div class="featured-project featured-project--even">
         <div class="featured-grid">
           <div class="featured-image">
-            <a href="https://www.youtube.com/watch?v=Xll5ZCf7Dhw" target="_blank" rel="noreferrer" class="featured-video-link">
+            <button class="featured-video-link" data-video-id="Xll5ZCf7Dhw" aria-label="Assistir demonstração">
               <img src="https://img.youtube.com/vi/Xll5ZCf7Dhw/maxresdefault.jpg" alt="Demonstração do Spotify Profile Viewer" class="featured-img" />
-            </a>
+              <span class="play-btn" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </button>
           </div>
 
           <div class="featured-text">
             <p class="featured-label">Projeto em Destaque</p>
             <h3 class="featured-name">Spotify Profile</h3>
             <div class="featured-desc">
-              <p>Projeto pessoal focado em Server-Side Rendering (SSR) e SEO com a API do Spotify. Implementei busca debounced e paginação infinita para melhor experiência do usuário.</p>
+              <p>Um projeto de SPA em React que se conecta à Web API do Spotify para visualizar dados do perfil do usuário, principais artistas, faixas, playlists e tocar suas músicas direto nele.</p>
             </div>
             <div class="featured-tech">
               <span>React</span>
@@ -283,12 +286,12 @@
               <span>SSR</span>
             </div>
             <div class="featured-icons">
-              <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <a href="https://github.com/cherlau/spotify-profile-viewer" target="_blank" rel="noreferrer" aria-label="GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                 </svg>
               </a>
-              <a href="https://www.youtube.com/watch?v=Xll5ZCf7Dhw" target="_blank" rel="noreferrer" aria-label="Demo">
+              <a href="https://www.youtube.com/watch?v=Xll5ZCf7Dhw" target="_blank" rel="noreferrer" aria-label="Assistir demo" class="icon-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                   <polyline points="15 3 21 3 21 9"/>
@@ -311,9 +314,9 @@
 
           <div class="featured-text" style="width: 247px; margin-right: -40px;">
             <p class="featured-label">Projeto em Destaque</p>
-            <h3 class="featured-name">Site de Psicólogo</h3>
+            <h3 class="featured-name">Psicólogo Website</h3>
             <div class="featured-desc">
-              <p>Landing page institucional para consultório de psicologia, com design elegante e foco em conversão. Interface responsiva, seções de apresentação, especialidades e formulário de contato.</p>
+              <p>Landing page profissional e responsiva feita para o psicólogo Dr. Felipe Guimarães, com foco em acolhimento, clareza de informações e facilidade de contato.</p>
             </div>
             <div class="featured-tech">
               <span>HTML</span>
@@ -352,7 +355,7 @@
             <p class="featured-label">Projeto em Destaque</p>
             <h3 class="featured-name">Precificador SaaS Dinâmico</h3>
             <div class="featured-desc">
-              <p>Configurador de planos em Vue.js que faz a precificação alimentada por Google Sheets, utilizado pelo time de vendas. Módulos, descontos e condições.</p>
+              <p>Configurador de planos feito em Vue.js que faz a precificação alimentada por uma planilha do Google Sheets, utilizado pelo time de vendas. Módulos, descontos e condições.</p>
             </div>
             <div class="featured-tech">
               <span>Vue.js</span>
@@ -361,7 +364,7 @@
               <span>Google Sheets API</span>
             </div>
             <div class="featured-icons">
-              <a href="https://github.com/cherlau" target="_blank" rel="noreferrer" aria-label="GitHub">
+              <a href="https://github.com/cherlau/pricing-builder-from-sheet" target="_blank" rel="noreferrer" aria-label="GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                 </svg>
@@ -381,7 +384,7 @@
       <!-- Outros Projetos -->
       <div class="other-projects-header">
         <h2 class="other-projects-title">Outros Projetos</h2>
-        <a href="#" class="other-projects-archive">view the archive</a>
+        <a href="https://github.com/cherlau?tab=repositories" target="_blank" rel="noreferrer" class="other-projects-archive">Ver toda a lista</a>
       </div>
 
       <div class="other-projects">
@@ -469,6 +472,19 @@
     </footer>
 
   </main>
+</div>
+
+<!-- Video Modal -->
+<div id="video-modal" class="video-modal" role="dialog" aria-modal="true" aria-label="Vídeo de demonstração" hidden>
+  <div class="video-modal-backdrop"></div>
+  <div class="video-modal-container">
+    <button class="video-modal-close" aria-label="Fechar vídeo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="video-modal-frame">
+      <iframe id="video-modal-iframe" src="" allow="autoplay; encrypted-media" allowfullscreen frameborder="0" title="Demonstração do projeto"></iframe>
+    </div>
+  </div>
 </div>
 
 <script src="js/main.js"></script>
