@@ -786,7 +786,12 @@ section { margin-bottom: 100px; }
 }
 
 #contact h2 { color: #ccd6f6; font-size: 48px; font-weight: 600; margin-bottom: 20px; line-height: 1.1; }
-#contact > p { max-width: 480px; margin: 0 auto 40px; line-height: 1.7; font-size: 15px; }
+#contact > p { max-width: 490px; margin: 0 auto 40px; line-height: 1.7; font-size: 15px; }
+
+#contact span {
+  margin-bottom: -3px;
+  margin-left: 4px;
+}
 
 .contact-btn {
   display: inline-flex;
