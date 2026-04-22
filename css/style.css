@@ -343,6 +343,7 @@ section { margin-bottom: 100px; }
 
 .exp-role { color: #ccd6f6; font-size: 20px; font-weight: 500; margin-bottom: 4px; }
 .exp-role .company { color: var(--accent); }
+.exp-role .company a { color: inherit; text-decoration: none; }
 
 .exp-period {
   color: #b1bad3;
@@ -728,6 +729,10 @@ section { margin-bottom: 100px; }
   transform: translateY(-4px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   border-color: color-mix(in srgb, var(--accent) 27%, transparent);
+}
+
+.project-card:hover h3 {
+	color: var(--accent);
 }
 
 .project-card-top {
