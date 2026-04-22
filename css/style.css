@@ -249,7 +249,7 @@ section { margin-bottom: 100px; }
   height: 270px;
   border-radius: 4px;
   overflow: hidden;
-  border: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
   transition: box-shadow 0.4s ease;
 }
 
@@ -264,7 +264,7 @@ section { margin-bottom: 100px; }
 }
 
 .photo-wrapper:hover .photo-frame {
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 56%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 66%, transparent);
   border-color: #64ffdba4;
 }
 
@@ -279,7 +279,7 @@ section { margin-bottom: 100px; }
   height: 100%;
   top: 14px;
   left: 14px;
-  border: 2px solid color-mix(in srgb, var(--accent) 48%, transparent);
+  border: 2px solid color-mix(in srgb, var(--accent) 68%, transparent);
   border-radius: 4px;
   z-index: -1;
   pointer-events: none;
