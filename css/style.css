@@ -207,7 +207,7 @@ section { margin-bottom: 100px; }
   max-width: 68ch;
 }
 
-.about-text strong { color: #ccd6f6; }
+.about-text strong, .sidebar-intro strong { color: #64ffda; }
 
 .skills-list {
   display: grid;
