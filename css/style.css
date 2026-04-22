@@ -507,7 +507,7 @@ section { margin-bottom: 100px; }
   grid-row: 1;
   border-radius: 4px;
   overflow: hidden;
-  height: 340px;
+  height: 250px;
   background: color-mix(in srgb, var(--accent) 9%, transparent);
   position: relative;
 }
@@ -686,8 +686,29 @@ section { margin-bottom: 100px; }
 
 .mock-pricing-cta span { color: var(--accent); font-size: 12px; font-family: 'Fira Code', monospace; }
 
+/* ── Other projects header ── */
+.other-projects-header {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+.other-projects-title {
+  color: #ccd6f6;
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+.other-projects-archive {
+  color: var(--accent);
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+.other-projects-archive:hover { text-decoration: underline; }
+
 /* ── Other project cards ── */
-.other-projects { display: flex; flex-direction: column; gap: 16px; }
+.other-projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 
 .project-card {
   background: #112240;
