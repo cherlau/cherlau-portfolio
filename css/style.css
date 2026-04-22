@@ -909,8 +909,12 @@ footer a:hover { color: var(--accent); }
     color: var(--accent);
   }
 
+  .nav-link {
+	padding: 6px 13px;
+  }
+
   .nav-label {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.1em;
   }
 
