@@ -507,15 +507,31 @@ section { margin-bottom: 100px; }
   grid-row: 1;
   border-radius: 4px;
   overflow: hidden;
-  height: 250px;
+  height: 245px;
+  width: 430px;
   background: color-mix(in srgb, var(--accent) 9%, transparent);
   position: relative;
+  margin-top: -25px;
 }
 
 .featured-project--even .featured-image { grid-column: 1; }
 .featured-project--odd  .featured-image { grid-column: 2; }
 
+.featured-video-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.featured-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .featured-text {
+  width: 200px;
   grid-row: 1;
   position: relative;
   z-index: 2;
@@ -549,8 +565,8 @@ section { margin-bottom: 100px; }
   z-index: 3;
 }
 
-.featured-project--even .featured-desc { margin-left: -60px; }
-.featured-project--odd  .featured-desc { margin-right: -60px; }
+.featured-project--even .featured-desc { margin-left: -160px; }
+.featured-project--odd  .featured-desc { margin-right: -160px; }
 
 .featured-desc p {
   font-size: 14px;
