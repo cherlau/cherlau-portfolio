@@ -12,8 +12,6 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
 </p>
 
-![demo](assets/demo.png)
-
 ## 🎯 Sobre o Projeto
 Este é o meu cartão de visitas no mundo digital. O objetivo principal foi criar um site leve, sem frameworks pesados, demonstrando domínio em **Vanilla JavaScript** e técnicas modernas de **CSS**.
 
